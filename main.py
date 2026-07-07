@@ -8,7 +8,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.graphics import Color, Rectangle, RoundedRectangle
 from kivy.animation import Animation
 from kivy.clock import Clock
-
+from kivy.uix.image import Image
 # ==========================================
 # 1. LÓGICA DE LAS OPERACIONES MATEMÁTICAS
 # ==========================================
@@ -103,38 +103,31 @@ class ControladorCalculadora:
 class PantallaInicio(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        
+
         with self.canvas.before:
             Color(1, 0.92, 0.94, 1)
             self.rect = Rectangle(pos=self.pos, size=self.size)
+
         self.bind(pos=self.actualizar_fondo, size=self.actualizar_fondo)
-        
-        self.logo = Label(
-            text="Calculadora\ndel Yavirac",
-            font_size=28,  
-            font_name="Georgia",
-            color=(0.85, 0.35, 0.45, 1),
-            bold=True,
-            halign='center',
-            line_height=1.2
+
+        layout = BoxLayout(orientation="vertical", padding=30)
+
+        self.logo = Image(
+            source="calcu.png"
         )
-        self.add_widget(self.logo)
-        self.on_enter = self.iniciar_animacion
+
+        layout.add_widget(self.logo)
+        self.add_widget(layout)
 
     def actualizar_fondo(self, *args):
         self.rect.pos = self.pos
         self.rect.size = self.size
 
-    def iniciar_animacion(self):
-        anim = Animation(font_size=36, duration=0.6) + Animation(font_size=26, duration=0.6)
-        anim.repeat = True
-        anim.start(self.logo)
-        
-        Clock.schedule_once(self.cambiar_a_calculadora, 2.5)
+    def on_enter(self):
+        Clock.schedule_once(self.cambiar_a_calculadora, 2)
 
     def cambiar_a_calculadora(self, dt):
-        self.manager.current = 'calculadora'
-
+        self.manager.current = "calculadora"
 
 class BotonLindo(Button):
     def __init__(self, texto, color_fondo, **kwargs):
@@ -144,7 +137,6 @@ class BotonLindo(Button):
         self.background_down = ''
         self.background_color = (0, 0, 0, 0) 
         self.font_size = 22 
-        self.font_name = "Georgia"
         self.bold = True
         self.color = (1, 1, 1, 1)
         
@@ -184,7 +176,6 @@ class Calculadora(BoxLayout):
         self.pantalla = TextInput(
             text='0',
             font_size=36, 
-            font_name="Georgia",
             halign='right',
             readonly=True,
             size_hint_y=0.15, 
