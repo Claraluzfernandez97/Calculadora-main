@@ -119,7 +119,8 @@ class PantallaInicio(Screen):
             line_height=1.2
         )
         self.add_widget(self.logo)
-        self.on_enter = self.iniciar_animacion
+        def on_enter(self):
+            self.iniciar_animacion()
 
     def actualizar_fondo(self, *args):
         self.rect.pos = self.pos
